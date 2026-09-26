@@ -1,32 +1,39 @@
-# CommerceFlow - Advanced E-commerce Backend
+# 🛒 CommerceFlow - Advanced E-commerce Backend
 
-CommerceFlow is a secure, highly modular REST API built with **Java 21** and **Spring Boot 3.x/4.x**. It is designed using a package-by-feature monolithic architecture to cleanly manage product catalogs, inventory, user authentication, cart operations, and transactional order checkouts.
+CommerceFlow is a secure, fully functional REST API built for a modern e-commerce platform. It handles everything a real-world online store needs behind the scenes: managing products, handling user accounts securely, processing shopping carts, and safely checking out orders without accidentally overselling out-of-stock items.
 
-## Core Features
-* **Authentication & Authorization:** Stateless security using JWT (JSON Web Tokens) with distinct `CUSTOMER` and `ADMIN` roles.
-* **Transactional Checkout:** Atomic order processing that verifies stock, calculates totals, creates order snapshots, and reduces inventory in a single database transaction.
-* **Concurrency Handling:** Optimistic locking (`@Version`) prevents race conditions and overselling when multiple users purchase the same item simultaneously.
-* **Admin Management:** Secure endpoints for administrators to manage inventory, catalog updates, and strictly validated order status transitions (e.g., `PENDING` -> `CONFIRMED`).
-* **Clean Exception Handling:** Global REST controller advice translates complex Java exceptions (like validation errors and database conflicts) into clean, readable JSON responses.
-* **Interactive API Docs:** Fully integrated Swagger UI / OpenAPI 3.0 documentation.
+This project was built to demonstrate clean architecture, robust security, and production-ready coding practices using Java and Spring Boot.
 
-## Tech Stack
+## ✨ Key Features
+
+* **Secure User Authentication:** Users can register and log in securely. The system uses JSON Web Tokens (JWT) so users stay logged in without the server needing to remember their session.
+* **Role-Based Access Control:** 
+  * **Customers** can browse products, manage their personal shopping carts, and place orders.
+  * **Admins** have exclusive rights to add/remove products, update inventory, and change order statuses (e.g., shipping an order).
+* **Safe, Transactional Checkout:** When a user checks out, the system calculates the total, creates an order, and reduces the inventory all in one single, safe step. If anything goes wrong (like a database error), the entire checkout is canceled so no data is corrupted.
+* **Prevents Overselling (Concurrency):** If two customers try to buy the very last item in stock at the exact same millisecond, the system's "optimistic locking" ensures only one person gets it, and the other gets a polite "out of stock" message.
+* **Interactive API Documentation:** Includes a beautifully generated Swagger UI web page where anyone can view and test the API endpoints directly in their browser.
+
+## 🛠️ Technology Stack
+
 * **Language:** Java 21
-* **Framework:** Spring Boot (Web, Data JPA, Validation, Security)
+* **Framework:** Spring Boot 4.1.x (Web, Data JPA, Security, Validation)
 * **Database:** MySQL 8.0
-* **Security:** Spring Security, Nimbus OAuth2 JWT
-* **Testing:** JUnit 5, Mockito
+* **Security:** Spring Security with Nimbus OAuth2 JWT & BCrypt Password Encoding
+* **Testing:** JUnit 5 & Mockito
+* **Deployment/Containerization:** Docker & Docker Compose
 * **Documentation:** SpringDoc OpenAPI (Swagger)
 
-## Local Setup
+## 🚀 How to Run the Project Locally
+
+You can run this project either using Docker (easiest) or manually via Maven.
 
 ### Prerequisites
 * Java 21 installed
-* MySQL running locally (or via Docker)
+* MySQL running (if not using Docker)
+* Git
 
-### Environment Variables
-Configure these variables in your IDE or system environment before running:
-```env
-DB_USERNAME=root
-DB_PASSWORD=your_mysql_password
-JWT_SECRET=your_32_character_secret_key
+### Step 1: Clone the Repository
+```bash
+git clone [https://github.com/your-username/commerceflow.git](https://github.com/your-username/commerceflow.git)
+cd commerceflow
