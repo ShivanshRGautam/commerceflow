@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: commerceflow-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: commerceflow_db
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3307:3306" # Mapped to 3307 on your host so it doesn't conflict with your local Windows MySQL
+    volumes:
+      - db_data:/var/lib/mysql
+
+  commerceflow-app:
+    build: .
+    container_name: commerceflow-backend
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    environment:
+      # Notice the URL uses the container name 'mysql-db' instead of localhost
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/commerceflow_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - mysql-db
+
+volumes:
+  db_data:
